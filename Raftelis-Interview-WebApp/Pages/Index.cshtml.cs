@@ -1,20 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Raftelis_Interview_WebApp.Models;
+using Raftelis_Interview_WebApp.Services;
 
-namespace Raftelis_Interview_WebApp.Pages
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    public List<PropertyRecord>? PropertyRecords { get; set; }
+
+    public void OnGet()
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
+        PropertyRecords = PropertyDataService.LoadPropertyData();
     }
 }
