@@ -60,6 +60,5 @@ namespace Raftelis_Interview_WebApp.Models
                 }
             }
         }
-
     }
 }

@@ -3,11 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Raftelis_Interview_WebApp.Pages
 {
-    public class PrivacyModel : PageModel
+    public class ThankyouModel : PageModel
     {
-        private readonly ILogger<PrivacyModel> _logger;
+        private readonly ILogger<ThankyouModel> _logger;
 
-        public PrivacyModel(ILogger<PrivacyModel> logger)
+        public ThankyouModel(ILogger<ThankyouModel> logger)
         {
             _logger = logger;
         }

@@ -1,7 +1,7 @@
 ﻿using Raftelis_Interview_WebApp.Models;
 using System.Globalization;
-// 6 lines were removed! FIGURE OUT WHY!!!!!!!!
-// Take first word for llc's and assume all lastname, firstname so just compare with firstname and don't change data!
+using System.Linq;
+
 namespace Raftelis_Interview_WebApp.Services
 {
     public class PropertyDataService
@@ -51,6 +51,8 @@ namespace Raftelis_Interview_WebApp.Services
             // Initial unique sort
             return RemoveDuplicatesAndSortByAddress(records);
         }
+
+
         public static List<PropertyRecord> SortByName(List<PropertyRecord> records)
         {
             foreach (var record in records)
@@ -59,6 +61,15 @@ namespace Raftelis_Interview_WebApp.Services
             }
 
             return records.OrderBy(r => r.SortableName).ToList();
+        }
+        public static List<PropertyRecord> SortByNameDesc(List<PropertyRecord> records)
+        {
+            foreach (var record in records)
+            {
+                record.GenerateSortableName();
+            }
+        
+            return records.OrderBy(r => r.SortableName).Reverse().ToList();
         }
 
 
@@ -69,6 +80,16 @@ namespace Raftelis_Interview_WebApp.Services
                           .Select(group => group.First())
                           .OrderBy(record => record.StreetName)
                           .ThenBy(record => record.StreetNumber)
+                          .ToList();
+        }
+        public static List<PropertyRecord> RemoveDuplicatesAndSortByAddressDesc(List<PropertyRecord> records)
+        {
+            // Remove duplicates based on PIN and sort by address then reverse
+            return records.GroupBy(record => record.Pin)
+                          .Select(group => group.First())
+                          .OrderBy(record => record.StreetName)
+                          .ThenBy(record => record.StreetNumber)
+                          .Reverse()
                           .ToList();
         }
 
@@ -91,6 +112,7 @@ namespace Raftelis_Interview_WebApp.Services
         {
             return records.OrderByDescending(r => r.SaleDate).ToList();
         }
+
 
         public static List<PropertyRecord> SortBySalePriceAsc(List<PropertyRecord> records)
         {

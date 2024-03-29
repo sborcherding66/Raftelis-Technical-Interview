@@ -3,20 +3,29 @@
 
 <h1>Property Listings</h1>
 
-<!-- Keep track of the current sort state -->
-<input type="hidden" id="currentSort" value="@Model.CurrentSort">
-
 @if (Model.PropertyRecords != null && Model.PropertyRecords.Any())
 {
     <table class="table">
         <thead>
             <tr>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=pin&currentSort=@Model.CurrentSort'">PIN</th>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=address'">Address</th>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=owner'">Owner</th>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=marketValue&currentSort=@Model.CurrentSort'">Market Value</th>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=saleDate&currentSort=@Model.CurrentSort'">Sale Date</th>
-                <th class="sortable-header text-center" onclick="window.location.href='?sort=salePrice&currentSort=@Model.CurrentSort'">Sale Price</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=pin&sortOrder=@(Model.CurrentSortField == "pin" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    PIN <span class="sort-order">@Model.SortIndicators["pin"]</span>
+                </th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=address&sortOrder=@(Model.CurrentSortField == "address" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    Address <span class="sort-order">@Model.SortIndicators["address"]</span>
+                </th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=owner&sortOrder=@(Model.CurrentSortField == "owner" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    Owner <span class="sort-order">@Model.SortIndicators["owner"]</span>
+                </th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=marketValue&sortOrder=@(Model.CurrentSortField == "marketValue" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    Market Value <span class="sort-order">@Model.SortIndicators["marketValue"]</span>
+                </th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=saleDate&sortOrder=@(Model.CurrentSortField == "saleDate" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    Sale Date <span class="sort-order">@Model.SortIndicators["saleDate"]</span>
+                </th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sortField=salePrice&sortOrder=@(Model.CurrentSortField == "salePrice" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
+                    Sale Price <span class="sort-order">@Model.SortIndicators["salePrice"]</span>
+                </th>
                 <th class="text-center">Link to Data</th>
                 <th class="text-center">Google Maps</th>
             </tr>

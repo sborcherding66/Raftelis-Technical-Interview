@@ -22,20 +22,20 @@ body {
 }
 
 body {
-    background-color: #dff1f5; /* Light blue background */
+    background-color: #dff1f5;
 }
 
 
 .navbar {
-    background-color: #083C44 !important; /* Dark gray, for example */
+    background-color: #083C44 !important;
 }
 
 .navbar-light .navbar-nav .nav-link {
-    color: #ffffff !important; /* Change text color to white for visibility */
+    color: #ffffff !important;
 }
 
 .navbar-brand, .nav-link {
-    color: #ffffff !important; /* Ensuring all text in the navbar is white */
+    color: #ffffff !important;
 }
 
 
@@ -43,23 +43,27 @@ body {
 table {
     width: 100%;
     border-collapse: collapse;
-    border: 3px solid #000000; /* Black border for the table */
+    border: 5px solid #000000;
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
-    background-color: #fff !important; /* Setting the background color for both headers and cells */
+    background-color: #fff !important;
 }
 
 .sortable-header {
     cursor: pointer;
-    background-color: #fff; /* Light blue background for sortable headers */
+    background-color: #fff;
 }
 
     .sortable-header:hover {
-        background-color: #e9e9e9 !important; /* Slightly darker shade of the background color for hover state */
+        background-color: #e9e9e9 !important;
     }
 
 
+.sort-indicator {
+    font-weight: normal;
+    font-size: smaller;
+}

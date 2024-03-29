@@ -1,79 +1,110 @@
+﻿using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Raftelis_Interview_WebApp.Models;
 using Raftelis_Interview_WebApp.Services;
+using System.Collections.Generic;
 
 public class IndexModel : PageModel
 {
     public List<PropertyRecord>? PropertyRecords { get; set; }
-    // This property will keep track of the current sorting state for the market value
-    public string CurrentSort { get; set; } = "";
 
-    public void OnGet(string sort = "", string currentSort = "")
+    // Properties to keep track of the current sort field and its direction
+    public string CurrentSortField { get; set; } = "address";
+    public string CurrentSortOrder { get; set; } = "asc";
+    public Dictionary<string, HtmlString> SortIndicators { get; set; } = new Dictionary<string, HtmlString>();
+
+    public void OnGet(string sortField = "", string sortOrder = "asc")
     {
+        // Load the initial set of data
         PropertyRecords = PropertyDataService.LoadPropertyData();
-        CurrentSort = currentSort; // Keep the current sort state to toggle between sorts
 
-        switch (sort)
+        // Update the current sort state based on query parameters, if provided
+        if (!string.IsNullOrEmpty(sortField))
+        {
+            CurrentSortField = sortField;
+            CurrentSortOrder = sortOrder;
+        }
+
+        // Apply sorting based on the current sort field and order
+        switch (CurrentSortField)
         {
             case "owner":
-                PropertyRecords = PropertyDataService.SortByName(PropertyRecords);
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.SortByName(PropertyRecords) :
+                    PropertyDataService.SortByNameDesc(PropertyRecords);
                 break;
             case "address":
-                PropertyRecords = PropertyDataService.RemoveDuplicatesAndSortByAddress(PropertyRecords);
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.RemoveDuplicatesAndSortByAddress(PropertyRecords) :
+                    PropertyDataService.RemoveDuplicatesAndSortByAddressDesc(PropertyRecords);
                 break;
             case "marketValue":
-                if (currentSort == "asc" || string.IsNullOrEmpty(currentSort))
-                {
-                    PropertyRecords = PropertyDataService.SortByMarketValueAsc(PropertyRecords);
-                    CurrentSort = "desc"; // Prepare to toggle to descending on the next click
-                }
-                else if (currentSort == "desc")
-                {
-                    PropertyRecords = PropertyDataService.SortByMarketValueDesc(PropertyRecords);
-                    CurrentSort = "asc"; // Reset to ascending for the next interaction
-                }
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.SortByMarketValueAsc(PropertyRecords) :
+                    PropertyDataService.SortByMarketValueDesc(PropertyRecords);
                 break;
             case "saleDate":
-                if (currentSort == "asc" || string.IsNullOrEmpty(currentSort))
-                {
-                    PropertyRecords = PropertyDataService.SortBySaleDateAsc(PropertyRecords);
-                    CurrentSort = "desc";
-                }
-                else if (currentSort == "desc")
-                {
-                    PropertyRecords = PropertyDataService.SortBySaleDateDesc(PropertyRecords);
-                    CurrentSort = "asc";
-                }
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.SortBySaleDateAsc(PropertyRecords) :
+                    PropertyDataService.SortBySaleDateDesc(PropertyRecords);
                 break;
             case "salePrice":
-                if (currentSort == "asc" || string.IsNullOrEmpty(currentSort))
-                {
-                    PropertyRecords = PropertyDataService.SortBySalePriceAsc(PropertyRecords);
-                    CurrentSort = "desc";
-                }
-                else if (currentSort == "desc")
-                {
-                    PropertyRecords = PropertyDataService.SortBySalePriceDesc(PropertyRecords);
-                    CurrentSort = "asc";
-                }
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.SortBySalePriceAsc(PropertyRecords) :
+                    PropertyDataService.SortBySalePriceDesc(PropertyRecords);
                 break;
             case "pin":
-                if (currentSort == "asc" || string.IsNullOrEmpty(currentSort))
-                {
-                    PropertyRecords = PropertyDataService.SortByPINAsc(PropertyRecords);
-                    CurrentSort = "desc";
-                }
-                else if (currentSort == "desc")
-                {
-                    PropertyRecords = PropertyDataService.SortByPINDesc(PropertyRecords);
-                    CurrentSort = "asc";
-                }
+                PropertyRecords = sortOrder == "asc" ?
+                    PropertyDataService.SortByPINAsc(PropertyRecords) :
+                    PropertyDataService.SortByPINDesc(PropertyRecords);
                 break;
-            // Add cases for other sorting criteria as needed
             default:
-                // No additional action taken for the default case
+               
                 break;
         }
+
+        // Prepare sort indicators for all sortable fields
+        PrepareSortIndicators();
     }
+
+    private void PrepareSortIndicators()
+    {
+        var sortableFields = new List<string> { "pin", "address", "owner", "marketValue", "saleDate", "salePrice" };
+        foreach (var field in sortableFields)
+        {
+            SortIndicators[field] = SortIndicator(field, CurrentSortField, CurrentSortOrder);
+        }
+    }
+
+    public HtmlString SortIndicator(string field, string currentSortField, string currentSortOrder)
+    {
+        if (field != currentSortField)
+        {
+            return new HtmlString(""); // No indicator if not the current sort field
+        }
+
+        string indicatorHtml;
+        switch (field)
+        {
+            case "pin":
+            case "marketValue":
+            case "salePrice":
+                indicatorHtml = currentSortOrder == "asc" ? "<span class='sort-indicator'>(Low to High)</span>" : "<span class='sort-indicator'>(High to Low)</span>";
+                break;
+            case "saleDate":
+                indicatorHtml = currentSortOrder == "asc" ? "<span class='sort-indicator'>(Oldest to Newest)</span>" : "<span class='sort-indicator'>(Newest to Oldest)</span>";
+                break;
+            case "address":
+            case "owner":
+                indicatorHtml = currentSortOrder == "asc" ? "<span class='sort-indicator'>(A to Z)</span>" : "<span class='sort-indicator'>(Z to A)</span>";
+                break;
+            default:
+                indicatorHtml = ""; // Fallback case
+                break;
+        }
+
+        return new HtmlString(indicatorHtml);
+    }
+
 }
 
