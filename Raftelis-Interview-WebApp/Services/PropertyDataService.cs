@@ -1,10 +1,7 @@
 ﻿using Raftelis_Interview_WebApp.Models;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 // 6 lines were removed! FIGURE OUT WHY!!!!!!!!
+// Take first word for llc's and assume all lastname, firstname so just compare with firstname and don't change data!
 namespace Raftelis_Interview_WebApp.Services
 {
     public class PropertyDataService
@@ -51,15 +48,67 @@ namespace Raftelis_Interview_WebApp.Services
                 records.Add(record);
             }
 
-            // Remove duplicates based on PIN and sort
-            var uniqueRecords = records
-                .GroupBy(record => record.Pin)
-                .Select(group => group.First())
-                .OrderBy(record => record.StreetName)
-                .ThenBy(record => record.StreetNumber)
-                .ToList();
+            // Initial unique sort
+            return RemoveDuplicatesAndSortByAddress(records);
+        }
+        public static List<PropertyRecord> SortByName(List<PropertyRecord> records)
+        {
+            foreach (var record in records)
+            {
+                record.GenerateSortableName();
+            }
 
-            return uniqueRecords;
+            return records.OrderBy(r => r.SortableName).ToList();
+        }
+
+
+        public static List<PropertyRecord> RemoveDuplicatesAndSortByAddress(List<PropertyRecord> records)
+        {
+            // Remove duplicates based on PIN and sort by address
+            return records.GroupBy(record => record.Pin)
+                          .Select(group => group.First())
+                          .OrderBy(record => record.StreetName)
+                          .ThenBy(record => record.StreetNumber)
+                          .ToList();
+        }
+
+
+        public static List<PropertyRecord> SortByMarketValueAsc(List<PropertyRecord> records)
+        {
+            return records.OrderBy(r => r.MarketValue).ToList();
+        }
+        public static List<PropertyRecord> SortByMarketValueDesc(List<PropertyRecord> records)
+        {
+            return records.OrderByDescending(r => r.MarketValue).ToList();
+        }
+
+
+        public static List<PropertyRecord> SortBySaleDateAsc(List<PropertyRecord> records)
+        {
+            return records.OrderBy(r => r.SaleDate).ToList();
+        }
+        public static List<PropertyRecord> SortBySaleDateDesc(List<PropertyRecord> records)
+        {
+            return records.OrderByDescending(r => r.SaleDate).ToList();
+        }
+
+        public static List<PropertyRecord> SortBySalePriceAsc(List<PropertyRecord> records)
+        {
+            return records.OrderBy(r => r.SalePrice).ToList();
+        }
+        public static List<PropertyRecord> SortBySalePriceDesc(List<PropertyRecord> records)
+        {
+            return records.OrderByDescending(r => r.SalePrice).ToList();
+        }
+
+
+        public static List<PropertyRecord> SortByPINAsc(List<PropertyRecord> records)
+        {
+            return records.OrderBy(r => r.Pin).ToList();
+        }
+        public static List<PropertyRecord> SortByPINDesc(List<PropertyRecord> records)
+        {
+            return records.OrderByDescending(r => r.Pin).ToList();
         }
     }
 }

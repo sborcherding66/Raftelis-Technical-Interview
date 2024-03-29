@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions; // Add this for the regex parsing
+﻿using System.Text.RegularExpressions; // Add this for the regex parsing
 
 namespace Raftelis_Interview_WebApp.Models
 {
@@ -18,7 +17,10 @@ namespace Raftelis_Interview_WebApp.Models
         public int? StreetNumber { get; private set; }
 
         // Property for Google Maps link
-        public string GoogleMapsLink => $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString(Address ?? string.Empty)}";
+        public string GoogleMapsLink => $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString($"{Address ?? string.Empty}, Mazama WA")}";
+
+
+        public string? SortableName { get; set; }
 
         public void ParseAddress()
         {
@@ -38,5 +40,26 @@ namespace Raftelis_Interview_WebApp.Models
                 StreetName = Address; // Use the full address if parsing fails
             }
         }
+
+        public void GenerateSortableName()
+        {
+            if (Owner.ToUpper().Contains("LLC"))
+            {
+                SortableName = Owner.Split(' ')[0];
+            }
+            else
+            {
+                var names = Owner.Split(',');
+                if (names.Length > 1)
+                {
+                    SortableName = names[1].Split(' ')[1];
+                }
+                else
+                {
+                    SortableName = Owner; // Fallback in case the owner does not follow the expected format
+                }
+            }
+        }
+
     }
 }

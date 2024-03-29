@@ -21,19 +21,45 @@ body {
   margin-bottom: 60px;
 }
 
+body {
+    background-color: #dff1f5; /* Light blue background */
+}
+
+
+.navbar {
+    background-color: #083C44 !important; /* Dark gray, for example */
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important; /* Change text color to white for visibility */
+}
+
+.navbar-brand, .nav-link {
+    color: #ffffff !important; /* Ensuring all text in the navbar is white */
+}
+
+
 /* Table Layout */
 table {
     width: 100%;
     border-collapse: collapse;
+    border: 3px solid #000000; /* Black border for the table */
 }
 
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
     text-align: left;
+    background-color: #fff !important; /* Setting the background color for both headers and cells */
 }
 
-th {
-    background-color: #f2f2f2;
+.sortable-header {
+    cursor: pointer;
+    background-color: #fff; /* Light blue background for sortable headers */
 }
+
+    .sortable-header:hover {
+        background-color: #e9e9e9 !important; /* Slightly darker shade of the background color for hover state */
+    }
+
 

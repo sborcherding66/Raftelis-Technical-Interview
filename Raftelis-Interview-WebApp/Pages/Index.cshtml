@@ -3,18 +3,22 @@
 
 <h1>Property Listings</h1>
 
+<!-- Keep track of the current sort state -->
+<input type="hidden" id="currentSort" value="@Model.CurrentSort">
+
 @if (Model.PropertyRecords != null && Model.PropertyRecords.Any())
 {
     <table class="table">
         <thead>
             <tr>
-                <th>PIN</th>
-                <th>Address</th>
-                <th>Owner</th>
-                <th>Market Value</th>
-                <th>Sale Date</th>
-                <th>Sale Price</th>
-                <th>Link</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=pin&currentSort=@Model.CurrentSort'">PIN</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=address'">Address</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=owner'">Owner</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=marketValue&currentSort=@Model.CurrentSort'">Market Value</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=saleDate&currentSort=@Model.CurrentSort'">Sale Date</th>
+                <th class="sortable-header text-center" onclick="window.location.href='?sort=salePrice&currentSort=@Model.CurrentSort'">Sale Price</th>
+                <th class="text-center">Link to Data</th>
+                <th class="text-center">Google Maps</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +32,7 @@
                     <td>@(record.SaleDate.HasValue ? record.SaleDate.Value.ToShortDateString() : "")</td>
                     <td>@record.SalePrice.ToString("C")</td>
                     <td><a href="@record.Link" target="_blank">View</a></td>
+                    <td><a href="@record.GoogleMapsLink" target="_blank" class="maps-link">@record.Address</a></td>
                 </tr>
             }
         </tbody>
@@ -37,4 +42,3 @@ else
 {
     <p>No records found.</p>
 }
-
