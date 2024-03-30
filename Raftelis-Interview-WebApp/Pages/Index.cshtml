@@ -1,13 +1,16 @@
-﻿@page
+﻿@* Main view for displaying property listings. Utilizes Model for dynamic data rendering. *@
+@page
 @model IndexModel
 
 <h1>Property Listings</h1>
 
+@* Check if property records exist and display them in a table if they do. *@
 @if (Model.PropertyRecords != null && Model.PropertyRecords.Any())
 {
     <table class="table">
         <thead>
             <tr>
+                @* Sortable column headers with onclick events to toggle sort order. *@
                 <th class="sortable-header text-center" onclick="window.location.href='?sortField=pin&sortOrder=@(Model.CurrentSortField == "pin" && Model.CurrentSortOrder == "asc" ? "desc" : "asc")'">
                     PIN <span class="sort-order">@Model.SortIndicators["pin"]</span>
                 </th>
@@ -31,15 +34,16 @@
             </tr>
         </thead>
         <tbody>
+            @* Loop through each record and display its details. *@
             @foreach (var record in Model.PropertyRecords)
             {
                 <tr>
                     <td>@record.Pin</td>
                     <td>@record.Address</td>
                     <td>@record.Owner</td>
-                    <td>@record.MarketValue.ToString("C")</td>
+                    <td>@record.MarketValue?.ToString("C")</td>
                     <td>@(record.SaleDate.HasValue ? record.SaleDate.Value.ToShortDateString() : "")</td>
-                    <td>@record.SalePrice.ToString("C")</td>
+                    <td>@record.SalePrice?.ToString("C")</td>
                     <td><a href="@record.Link" target="_blank">View</a></td>
                     <td><a href="@record.GoogleMapsLink" target="_blank" class="maps-link">@record.Address</a></td>
                 </tr>

@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Raftelis_Interview_WebApp.Models;
 using Raftelis_Interview_WebApp.Services;
-using System.Collections.Generic;
 
+// Defines the model for the main index page, handling data loading and sorting.
 public class IndexModel : PageModel
 {
+    // Holds the list of property records to display.
     public List<PropertyRecord>? PropertyRecords { get; set; }
 
     // Properties to keep track of the current sort field and its direction
@@ -18,7 +19,7 @@ public class IndexModel : PageModel
         // Load the initial set of data
         PropertyRecords = PropertyDataService.LoadPropertyData();
 
-        // Update the current sort state based on query parameters, if provided
+        // Update the current sort state based on query parameters
         if (!string.IsNullOrEmpty(sortField))
         {
             CurrentSortField = sortField;
@@ -67,6 +68,7 @@ public class IndexModel : PageModel
         PrepareSortIndicators();
     }
 
+    // Prepares the HTML indicators showing the current sort state for each field.
     private void PrepareSortIndicators()
     {
         var sortableFields = new List<string> { "pin", "address", "owner", "marketValue", "saleDate", "salePrice" };
@@ -76,6 +78,7 @@ public class IndexModel : PageModel
         }
     }
 
+    // Generates a sort indicator HTML string for the current sort field and order.
     public HtmlString SortIndicator(string field, string currentSortField, string currentSortOrder)
     {
         if (field != currentSortField)

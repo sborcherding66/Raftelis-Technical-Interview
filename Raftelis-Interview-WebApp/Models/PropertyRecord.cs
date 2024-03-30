@@ -1,48 +1,58 @@
-﻿using System.Text.RegularExpressions; // Add this for the regex parsing
+﻿using System.Text.RegularExpressions;
 
 namespace Raftelis_Interview_WebApp.Models
 {
+    // Represents a single property record with related data and functionalities.
     public class PropertyRecord
     {
         public string? Pin { get; set; }
         public string? Address { get; set; }
         public string? Owner { get; set; }
-        public decimal MarketValue { get; set; }
+        public decimal? MarketValue { get; set; }
         public DateTime? SaleDate { get; set; }
-        public decimal SalePrice { get; set; }
+        public decimal? SalePrice { get; set; }
         public string? Link { get; set; }
 
-        // Properties for sorting
+        // Additional properties for enhanced sorting and display functionalities.
         public string StreetName { get; private set; } = string.Empty;
         public int? StreetNumber { get; private set; }
-
-        // Property for Google Maps link
+        // Generates a Google Maps link for the property based on its address.
         public string GoogleMapsLink => $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString($"{Address ?? string.Empty}, Mazama WA")}";
 
 
-        public string? SortableName { get; set; }
+        public string? SortableName { get; set; } // Used for sorting records by name.
 
+        // Parses the address to extract and set the StreetName and StreetNumber.
         public void ParseAddress()
         {
-            if (Address is null) return; // Early return if Address is null
+            // Skip processing if Address is not provided.
+            if (Address is null) return;
 
+            // Regex to separate street number from the rest of the address.
             var match = Regex.Match(Address, @"^(\d+)[-\s]*\s*(.*)$");
             if (match.Success)
             {
                 StreetName = match.Groups[2].Value;
-                if (int.TryParse(match.Groups[1].Value, out var number))
-                {
-                    StreetNumber = number;
-                }
+                StreetNumber = int.TryParse(match.Groups[1].Value, out var number) ? number : null;
             }
             else
             {
-                StreetName = Address; // Use the full address if parsing fails
+                // Use full address as StreetName if specific parsing fails.
+                StreetName = Address;
             }
         }
 
+        // Generates the first name for sorting.
         public void GenerateSortableName()
         {
+            // Edge case where Owner information is missing.
+            if (string.IsNullOrWhiteSpace(Owner))
+            {
+                SortableName = string.Empty;
+                return;
+            }
+
+            // Specific logic for properties owned by LLCs.
             if (Owner.ToUpper().Contains("LLC"))
             {
                 SortableName = Owner.Split(' ')[0];
@@ -50,14 +60,7 @@ namespace Raftelis_Interview_WebApp.Models
             else
             {
                 var names = Owner.Split(',');
-                if (names.Length > 1)
-                {
-                    SortableName = names[1].Split(' ')[1];
-                }
-                else
-                {
-                    SortableName = Owner; // Fallback in case the owner does not follow the expected format
-                }
+                SortableName = names.Length > 1 && names[1].Split(' ').Length > 1 ? names[1].Split(' ')[1] : Owner;
             }
         }
     }

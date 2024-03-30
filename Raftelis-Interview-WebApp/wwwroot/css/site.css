@@ -1,51 +1,59 @@
+/* Base font size for the entire HTML document */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
+/* Increase base font size for screens wider than 768px */
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
+/* Custom focus styles for buttons, links, form controls, and checkboxes */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
+/* Ensures the html element fills the entire height of the viewport */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
+/* Adds bottom margin to body to avoid content overlap with the footer */
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
+/* Sets a light blue background color for the entire body of the page */
 body {
     background-color: #dff1f5;
 }
 
-
+/* Sets the navbar background color */
 .navbar {
     background-color: #083C44 !important;
 }
 
+/* Customizes the color of navbar links */
 .navbar-light .navbar-nav .nav-link {
     color: #ffffff !important;
 }
 
+/* Ensures the navbar brand and links are white */
 .navbar-brand, .nav-link {
     color: #ffffff !important;
 }
 
-
-/* Table Layout */
+/* Styles for the table layout */
 table {
     width: 100%;
     border-collapse: collapse;
     border: 5px solid #000000;
 }
 
+/* Styles for table headers and cells */
 th, td {
     border: 1px solid #ddd;
     padding: 8px;
@@ -53,16 +61,18 @@ th, td {
     background-color: #fff !important;
 }
 
+/* Styles for headers of sortable columns, indicating they are interactive */
 .sortable-header {
     cursor: pointer;
     background-color: #fff;
 }
 
+    /* Highlight effect on hover for sortable headers */
     .sortable-header:hover {
         background-color: #e9e9e9 !important;
     }
 
-
+/* Style for the sort order indicator */
 .sort-indicator {
     font-weight: normal;
     font-size: smaller;
